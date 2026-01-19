@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-truck"></i> Frota Disponível</h2>
+<div class="row">
+    {% for v in veiculos %}
+    <div class="col-md-4 mb-3">
+        <div class="card border-start border-4 {% if v.disponivel %}border-success{% else %}border-danger{% endif %} shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ v.modelo }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ v.placa }}</h6>
+                <p class="card-text">Capacidade: {{ v.capacidade_kg }}kg</p>
+                {% if v.disponivel %}
+                    <span class="badge bg-success">Disponível</span>
+                {% else %}
+                    <span class="badge bg-danger">Em uso</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-people"></i> Equipe de Motoristas</h2>
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CNH</th>
+                    <th>Validade</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in motoristas %}
+                <tr>
+                    <td>{{ m.nome }}</td>
+                    <td>{{ m.cnh }}</td>
+                    <td>{{ m.validade_cnh|date:"d/m/Y" }}</td>
+                    <td>
+                        <span class="badge bg-success">Ativo</span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center">Nenhum motorista cadastrado.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

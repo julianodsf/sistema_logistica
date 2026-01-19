@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Visão Geral{% endblock %}
+
+{% block content %}
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card card-counter bg-primary text-white p-3">
+            <h3>{{ total_entregas }}</h3>
+            <span>Total Entregas</span>
+            <i class="bi bi-clipboard-data float-end fs-1 opacity-50" style="margin-top: -40px;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-counter bg-warning text-dark p-3">
+            <h3>{{ entregas_pendentes }}</h3>
+            <span>Pendentes</span>
+            <i class="bi bi-clock-history float-end fs-1 opacity-50" style="margin-top: -40px;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-counter bg-info text-white p-3">
+            <h3>{{ entregas_transito }}</h3>
+            <span>Em Trânsito</span>
+            <i class="bi bi-truck float-end fs-1 opacity-50" style="margin-top: -40px;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-counter bg-success text-white p-3">
+            <h3>{{ veiculos_disponiveis }}</h3>
+            <span>Veículos Livres</span>
+            <i class="bi bi-ev-front float-end fs-1 opacity-50" style="margin-top: -40px;"></i>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h5 class="mb-0"><i class="bi bi-list-check"></i> Monitoramento em Tempo Real</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Rastreio</th>
+                        <th>Cliente</th>
+                        <th>Motorista</th>
+                        <th>Origem > Destino</th>
+                        <th>Status</th>
+                        <th>Previsão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrega in ultimas_entregas %}
+                    <tr>
+                        <td class="fw-bold">#{{ entrega.codigo_rastreio }}</td>
+                        <td>{{ entrega.cliente.razao_social }}</td>
+                        <td>
+                            {% if entrega.motorista %}
+                                <i class="bi bi-person-badge"></i> {{ entrega.motorista.nome }}
+                            {% else %}
+                                <span class="text-muted">--</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="d-block text-muted">{{ entrega.origem }}</small>
+                            <i class="bi bi-arrow-down"></i>
+                            <small class="d-block">{{ entrega.destino }}</small>
+                        </td>
+                        <td>
+                            {% if entrega.status == 'ENTREGUE' %}
+                                <span class="badge bg-success">Entregue</span>
+                            {% elif entrega.status == 'EM_TRANSITO' %}
+                                <span class="badge bg-info">Em Rota</span>
+                            {% elif entrega.status == 'PENDENTE' %}
+                                <span class="badge bg-warning text-dark">Pendente</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ entrega.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ entrega.data_chegada_prevista|date:"d/m H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">Nenhuma entrega registrada.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
